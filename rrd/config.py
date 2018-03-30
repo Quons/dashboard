@@ -40,6 +40,14 @@ ALARM_DB_USER = os.environ.get("ALARM_DB_USER","root")
 ALARM_DB_PASS = os.environ.get("ALARM_DB_PASS","")
 ALARM_DB_NAME = os.environ.get("ALARM_DB_NAME","alarms")
 
+# alarm database
+# TODO: read from api instead of db
+EVENT_DB_HOST = os.environ.get("ALARM_DB_HOST","127.0.0.1")
+EVENT_DB_PORT = int(os.environ.get("ALARM_DB_PORT",3306))
+EVENT_DB_USER = os.environ.get("ALARM_DB_USER","root")
+EVENT_DB_PASS = os.environ.get("ALARM_DB_PASS","")
+EVENT_DB_NAME = os.environ.get("ALARM_DB_NAME","string_judge")
+
 # ldap config
 LDAP_ENABLED = os.environ.get("LDAP_ENABLED",False)
 LDAP_SERVER = os.environ.get("LDAP_SERVER","ldap.forumsys.com:389")

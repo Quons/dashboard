@@ -1,0 +1,74 @@
+{% extends "portal/layout.html" %}
+{% block more_head %}
+<meta http-equiv="refresh" content="20">
+{% endblock %}
+{% block content %}
+<script>
+    function query_event() {
+        var query = $.trim($("#query").val());
+        var normal = document.getElementById('normal').checked ? 1 : 0;
+        var warning = document.getElementById('warning').checked ? 1 : 0;
+        var type;
+        if (normal === 0 && warning === 0) {
+            type = 'None'
+        } else if (normal === 1 && warning === 1) {
+            type = 'All'
+        } else if (normal === 1 && warning !== 1) {
+            type = "Normal"
+        } else {
+            type = "Warning"
+        }
+        window.location.href = '/portal/event?q=' + query + "&type=" + type;
+    }
+</script>
+
+<div class="form-inline" role="form">
+    <div class="form-group">
+        <input type="text" value="{{ data.query }}" class="form-control" id="query"
+               placeholder="search..." onkeydown="if(event.keyCode==13)query_event()">
+    </div>
+    <button type="button" onclick="query_event();" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    <input type="checkbox" name="normal" id="normal" {% if data.type=='All' or data.type=='Normal' %}checked="checked"{%
+    endif %}>
+    <span>normal</span>
+    <input type="checkbox" name="warning" id="warning" {% if data.type=='All'or data.type=='Warning' %} checked="checked"{% endif %}>
+    <span>warning</span>
+
+    <div class="pull-right">
+        <a href="{{ url_for('nodata_add_get') }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+    </div>
+
+</div>
+<div>
+    {% for v in data.vs %}
+    <hr/>
+    <div>type: {{ v.type }}</div>
+    <div>reason:{{ v.reason }}</div>
+    <div>message:{{ v.message }}</div>
+    <div>source:{{v.source}}</div>
+    <div>count:{{v.count}}</div>
+    <div>firstTime:{{v.first_time}}</div>
+    <div>lastTime:{{v.last_time}}</div>
+    {% endfor %}
+</div>
+
+{% import "portal/blocks.html" as blocks %}
+{{ blocks.pager('/portal/event?q='+data.query, data.total, data.limit, data.page) }}
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<script>
+    $(function () {
+        $("#normal").click(query_nodata);
+        $("#warning").click(query_nodata);
+    });
+    setTimeout('query_event()', 1000);
+</script>
+{% endblock %}
